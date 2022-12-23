@@ -24,6 +24,9 @@ gem 'bcrypt', '~> 3.1.7'
 
 gem 'rails-vue-loader'
 
+# Authentication 
+gem 'devise-jwt'
+
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'
 
