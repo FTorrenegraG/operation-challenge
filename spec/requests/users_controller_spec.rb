@@ -1,6 +1,8 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
-RSpec.describe "UsersController", type: :request do
+RSpec.describe('UsersController', type: :request) do
   describe 'as SuperAdmin User' do
     context 'should be able to manage users' do
       include_examples 'Account management'
@@ -14,7 +16,7 @@ RSpec.describe "UsersController", type: :request do
   end
 
   describe 'as Default User' do
-    describe "GET /show" do
+    describe 'GET /show' do
       pending "see details about myself #{__FILE__}"
     end
   end
