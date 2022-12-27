@@ -32,6 +32,10 @@ gem 'devise-jwt'
 # Rubocop
 gem 'rubocop'
 
+# Sentry
+gem "sentry-ruby"
+gem "sentry-rails"
+
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'
 

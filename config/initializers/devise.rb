@@ -317,7 +317,7 @@ Devise.setup do |config|
     jwt.revocation_requests = [
       ['DELETE', %r{^/logout$}]
     ]
-    jwt.expiration_time = Integer(1.day, 10)
+    jwt.expiration_time = Integer(1.day)
   end
   config.skip_session_storage = %i[http_auth params_auth]
 end
