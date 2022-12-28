@@ -1,0 +1,55 @@
+---
+openapi: 3.0.1
+info:
+  title: Operation challenge
+  version: v1
+paths:
+  "/login":
+    post:
+      summary: Create Session
+      tags:
+      - Sessions
+      parameters: []
+      responses:
+        '200':
+          description: session created
+        '401':
+          description: invalid request
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user:
+                  type: object
+                  properties:
+                    email:
+                      type: string
+                    password:
+                      type: string
+                  required:
+                  - email
+                  - password
+              required:
+              - user
+  "/logout":
+    delete:
+      summary: delete session
+      tags:
+      - Sessions
+      security:
+      - Bearer: {}
+      parameters:
+      - name: Authorization
+        in: header
+        schema:
+          type: string
+      responses:
+        '204':
+          description: session revoked
+servers:
+- url: http://{defaultHost}
+  variables:
+    defaultHost:
+      default: localhost:3000

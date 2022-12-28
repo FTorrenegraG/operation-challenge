@@ -36,6 +36,11 @@ gem 'rubocop'
 gem 'sentry-rails'
 gem 'sentry-ruby'
 
+# Swagger
+gem 'rswag-api'
+gem 'rswag-specs'
+gem 'rswag-ui'
+
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'
 
