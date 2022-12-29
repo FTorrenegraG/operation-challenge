@@ -18,7 +18,7 @@ RSpec.describe('sessions', type: :request) do
               password: { type: :string }
             },
             required: %w[email password]
-          },
+          }
         },
         required: %w[user]
       }
