@@ -10,6 +10,12 @@ class User < ApplicationRecord
 
   before_create :jti_token
 
+  enum access_level: {
+    standart: 0,
+    admin: 1,
+    super_admin: 2
+  }
+
   def jwt_payload
     super.merge({ access_level: })
   end
