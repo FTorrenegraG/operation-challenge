@@ -1,40 +1,174 @@
 # frozen_string_literal: true
 
-require 'rails_helper'
+require 'swagger_helper'
+require 'devise/jwt/test_helpers'
 
-RSpec.describe('Api::V1::Accounts', type: :request) do
-  describe 'GET /create' do
-    it 'returns http success' do
-      get '/api/v1/accounts/create'
-      expect(response).to(have_http_status(:success))
+RSpec.describe('api/v1/accounts', type: :request) do
+  let!(:admin_user) { FactoryBot.create(:user, access_level: :admin) }
+  let!(:Authorization) { Devise::JWT::TestHelpers.auth_headers({}, admin_user)['Authorization'] }
+
+  path '/api/v1/accounts' do
+    get('list accounts') do
+      tags('Api::V1::Accounts')
+      security [Bearer: {}]
+      parameter name: :Authorization, in: :header, type: :string
+      response(200, 'successful') do
+        run_test!
+      end
+    end
+
+    post('create account') do
+      tags('Api::V1::Accounts')
+      consumes('application/json')
+      produces('application/json')
+      security [Bearer: {}]
+      parameter name: :Authorization, in: :header, type: :string
+      parameter name: :account_params, in: :body, schema: {
+        type: :object,
+        properties: {
+          account: {
+            type: :object,
+            properties: {
+              name: { type: :string },
+              client_name: { type: :string },
+              manager_name: { type: :string }
+            },
+            required: %w[name]
+          }
+        },
+        required: %w[account]
+      }
+
+      response '201', 'account created' do
+        let(:account_params) { { account: { name: 'foo' } } }
+        run_test!
+      end
+
+      response '422', 'invalid request' do
+        let(:account) { FactoryBot.create(:account) }
+        let(:account_params) { { account: { name: account.name } } }
+        run_test!
+      end
     end
   end
 
-  describe 'GET /index' do
-    it 'returns http success' do
-      get '/api/v1/accounts/index'
-      expect(response).to(have_http_status(:success))
-    end
-  end
+  path '/api/v1/accounts/{id}' do
+    # You'll want to customize the parameter types...
+    parameter name: 'id', in: :path, type: :string, description: 'id'
 
-  describe 'GET /show' do
-    it 'returns http success' do
-      get '/api/v1/accounts/show'
-      expect(response).to(have_http_status(:success))
-    end
-  end
+    get('show account') do
+      tags('Api::V1::Accounts')
+      consumes('application/json')
+      produces('application/json')
+      security [Bearer: {}]
+      parameter name: :Authorization, in: :header, type: :string
+      response(200, 'successful') do
+        let(:id) { FactoryBot.create(:account).id }
 
-  describe 'GET /update' do
-    it 'returns http success' do
-      get '/api/v1/accounts/update'
-      expect(response).to(have_http_status(:success))
+        run_test!
+      end
+      response '404', 'not found' do
+        let(:id) { '123' }
+        run_test!
+      end
     end
-  end
 
-  describe 'GET /destroy' do
-    it 'returns http success' do
-      get '/api/v1/accounts/destroy'
-      expect(response).to(have_http_status(:success))
+    patch('update account') do
+      tags('Api::V1::Accounts')
+      consumes('application/json')
+      produces('application/json')
+      security [Bearer: {}]
+      parameter name: :Authorization, in: :header, type: :string
+      parameter name: :account_params, in: :body, schema: {
+        type: :object,
+        properties: {
+          account: {
+            type: :object,
+            properties: {
+              name: { type: :string },
+              client_name: { type: :string },
+              manager_name: { type: :string }
+            },
+            required: %w[name]
+          }
+        },
+        required: %w[account]
+      }
+
+      response '200', 'account updated' do
+        let(:id) { FactoryBot.create(:account).id }
+        let(:account_params) { { account: { name: 'foo' } } }
+        run_test!
+      end
+
+      response '422', 'invalid request' do
+        let(:account) { FactoryBot.create(:account, name: 'foo') }
+        let(:id) { FactoryBot.create(:account, name: 'foo2').id }
+        let(:account_params) { { account: { name: account.name } } }
+        run_test!
+      end
+      response '404', 'not found' do
+        let(:id) { '123' }
+        let(:account_params) { { account: { name: 'foo' } } }
+        run_test!
+      end
+    end
+
+    put('update account') do
+      tags('Api::V1::Accounts')
+      consumes('application/json')
+      produces('application/json')
+      security [Bearer: {}]
+      parameter name: :Authorization, in: :header, type: :string
+      parameter name: :account_params, in: :body, schema: {
+        type: :object,
+        properties: {
+          account: {
+            type: :object,
+            properties: {
+              name: { type: :string },
+              client_name: { type: :string },
+              manager_name: { type: :string }
+            },
+            required: %w[name]
+          }
+        },
+        required: %w[account]
+      }
+
+      response '200', 'account updated' do
+        let(:id) { FactoryBot.create(:account).id }
+        let(:account_params) { { account: { name: 'foo' } } }
+        run_test!
+      end
+
+      response '404', 'not found' do
+        let(:id) { '123' }
+        let(:account_params) { { account: { name: 'foo' } } }
+        run_test!
+      end
+
+      response '422', 'invalid request' do
+        let(:account) { FactoryBot.create(:account, name: 'foo') }
+        let(:id) { FactoryBot.create(:account, name: 'foo2').id }
+        let(:account_params) { { account: { name: account.name } } }
+        run_test!
+      end
+    end
+
+    delete('delete account') do
+      tags('Api::V1::Accounts')
+      security [Bearer: {}]
+      parameter name: :Authorization, in: :header, type: :string
+      response(200, 'successful') do
+        let(:id) { FactoryBot.create(:account, name: 'foo2').id }
+
+        run_test!
+      end
+      response '404', 'not found' do
+        let(:id) { '123' }
+        run_test!
+      end
     end
   end
 end

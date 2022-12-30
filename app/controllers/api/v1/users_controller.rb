@@ -22,6 +22,7 @@ class Api::V1::UsersController < ApplicationController
   end
 
   def update
+    return head(:unauthorized) if user_params[:access_level] && user_params[:access_level] != 'standart' && !current_user.super_admin?
     return return_errors(@user) unless @user.update(user_params)
 
     render(json: @user, status: :ok)

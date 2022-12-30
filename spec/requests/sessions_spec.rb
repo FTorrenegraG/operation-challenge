@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'swagger_helper'
+require 'devise/jwt/test_helpers'
 
 RSpec.describe('sessions', type: :request) do
   path '/login' do
@@ -46,6 +47,8 @@ RSpec.describe('sessions', type: :request) do
       parameter name: :Authorization, in: :header, type: :string
 
       response '204', 'session revoked' do
+        let!(:user) { FactoryBot.create(:user) }
+        let!(:Authorization) { Devise::JWT::TestHelpers.auth_headers({}, user)['Authorization'] }
         run_test!
       end
     end

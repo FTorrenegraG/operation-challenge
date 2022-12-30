@@ -3,4 +3,6 @@
 class Account < ApplicationRecord
   has_many :user_accounts, dependent: :restrict_with_error
   has_many :users, through: :user_accounts
+
+  validates :name, uniqueness: true
 end
