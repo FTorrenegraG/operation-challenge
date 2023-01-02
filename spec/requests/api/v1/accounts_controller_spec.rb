@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe('AccountsController', type: :request) do
+RSpec.describe('Api::V1::AccountsController', type: :request) do
   describe 'as SuperAdmin User' do
     context 'should be able to manage users' do
       let!(:admin_user) { FactoryBot.create(:user, access_level: :super_admin) }

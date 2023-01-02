@@ -6,9 +6,6 @@ require 'faker'
 
 RSpec.shared_examples('User management') do
   describe('api/v1/users', type: :request) do
-    let!(:admin_user) { FactoryBot.create(:user, access_level: :admin) }
-    let!(:Authorization) { Devise::JWT::TestHelpers.auth_headers({}, admin_user)['Authorization'] }
-
     path '/api/v1/users' do
       get('list users') do
         tags('Api::V1::Users')
