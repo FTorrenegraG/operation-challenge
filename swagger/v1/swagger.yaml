@@ -4,170 +4,6 @@ info:
   title: Operation challenge
   version: v1
 paths:
-  "/api/v1/accounts":
-    get:
-      summary: list accounts
-      tags:
-      - Api::V1::Accounts
-      security:
-      - Bearer: {}
-      parameters:
-      - name: Authorization
-        in: header
-        schema:
-          type: string
-      responses:
-        '200':
-          description: successful
-    post:
-      summary: create account
-      tags:
-      - Api::V1::Accounts
-      security:
-      - Bearer: {}
-      parameters:
-      - name: Authorization
-        in: header
-        schema:
-          type: string
-      responses:
-        '201':
-          description: account created
-        '422':
-          description: invalid request
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                account:
-                  type: object
-                  properties:
-                    name:
-                      type: string
-                    client_name:
-                      type: string
-                    manager_name:
-                      type: string
-                  required:
-                  - name
-              required:
-              - account
-  "/api/v1/accounts/{id}":
-    parameters:
-    - name: id
-      in: path
-      description: id
-      required: true
-      schema:
-        type: string
-    get:
-      summary: show account
-      tags:
-      - Api::V1::Accounts
-      security:
-      - Bearer: {}
-      parameters:
-      - name: Authorization
-        in: header
-        schema:
-          type: string
-      responses:
-        '200':
-          description: successful
-        '404':
-          description: not found
-    patch:
-      summary: update account
-      tags:
-      - Api::V1::Accounts
-      security:
-      - Bearer: {}
-      parameters:
-      - name: Authorization
-        in: header
-        schema:
-          type: string
-      responses:
-        '200':
-          description: account updated
-        '422':
-          description: invalid request
-        '404':
-          description: not found
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                account:
-                  type: object
-                  properties:
-                    name:
-                      type: string
-                    client_name:
-                      type: string
-                    manager_name:
-                      type: string
-                  required:
-                  - name
-              required:
-              - account
-    put:
-      summary: update account
-      tags:
-      - Api::V1::Accounts
-      security:
-      - Bearer: {}
-      parameters:
-      - name: Authorization
-        in: header
-        schema:
-          type: string
-      responses:
-        '200':
-          description: account updated
-        '404':
-          description: not found
-        '422':
-          description: invalid request
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                account:
-                  type: object
-                  properties:
-                    name:
-                      type: string
-                    client_name:
-                      type: string
-                    manager_name:
-                      type: string
-                  required:
-                  - name
-              required:
-              - account
-    delete:
-      summary: delete account
-      tags:
-      - Api::V1::Accounts
-      security:
-      - Bearer: {}
-      parameters:
-      - name: Authorization
-        in: header
-        schema:
-          type: string
-      responses:
-        '200':
-          description: successful
-        '404':
-          description: not found
   "/api/v1/users":
     get:
       summary: list users
@@ -372,6 +208,170 @@ paths:
       responses:
         '200':
           description: successful
+  "/api/v1/accounts":
+    get:
+      summary: list accounts
+      tags:
+      - Api::V1::Accounts
+      security:
+      - Bearer: {}
+      parameters:
+      - name: Authorization
+        in: header
+        schema:
+          type: string
+      responses:
+        '200':
+          description: successful
+    post:
+      summary: create account
+      tags:
+      - Api::V1::Accounts
+      security:
+      - Bearer: {}
+      parameters:
+      - name: Authorization
+        in: header
+        schema:
+          type: string
+      responses:
+        '201':
+          description: account created
+        '422':
+          description: invalid request
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                account:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    client_name:
+                      type: string
+                    manager_name:
+                      type: string
+                  required:
+                  - name
+              required:
+              - account
+  "/api/v1/accounts/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: id
+      required: true
+      schema:
+        type: string
+    get:
+      summary: show account
+      tags:
+      - Api::V1::Accounts
+      security:
+      - Bearer: {}
+      parameters:
+      - name: Authorization
+        in: header
+        schema:
+          type: string
+      responses:
+        '200':
+          description: successful
+        '404':
+          description: not found
+    patch:
+      summary: update account
+      tags:
+      - Api::V1::Accounts
+      security:
+      - Bearer: {}
+      parameters:
+      - name: Authorization
+        in: header
+        schema:
+          type: string
+      responses:
+        '200':
+          description: account updated
+        '422':
+          description: invalid request
+        '404':
+          description: not found
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                account:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    client_name:
+                      type: string
+                    manager_name:
+                      type: string
+                  required:
+                  - name
+              required:
+              - account
+    put:
+      summary: update account
+      tags:
+      - Api::V1::Accounts
+      security:
+      - Bearer: {}
+      parameters:
+      - name: Authorization
+        in: header
+        schema:
+          type: string
+      responses:
+        '200':
+          description: account updated
+        '404':
+          description: not found
+        '422':
+          description: invalid request
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                account:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    client_name:
+                      type: string
+                    manager_name:
+                      type: string
+                  required:
+                  - name
+              required:
+              - account
+    delete:
+      summary: delete account
+      tags:
+      - Api::V1::Accounts
+      security:
+      - Bearer: {}
+      parameters:
+      - name: Authorization
+        in: header
+        schema:
+          type: string
+      responses:
+        '200':
+          description: successful
+        '404':
+          description: not found
   "/login":
     post:
       summary: Create Session
