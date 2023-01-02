@@ -4,7 +4,9 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       resources :accounts, only: %i[index show create update destroy]
-      resources :users, only: %i[index show create update destroy]
+      resources :users, only: %i[index show create update destroy] do
+        get :show_me, on: :collection
+      end
     end
     namespace :v2 do
       resources :user_accounts, only: %i[index create update]

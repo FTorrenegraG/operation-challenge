@@ -2,7 +2,7 @@
 
 class Api::V1::UsersController < ApplicationController
   before_action :authenticate_user!
-  before_action :authenticate_admin
+  before_action :authenticate_admin, except: :show_me
   before_action :load_user, only: %i[show update destroy]
 
   def create
@@ -19,6 +19,10 @@ class Api::V1::UsersController < ApplicationController
 
   def show
     render(json: @user, status: :ok)
+  end
+
+  def show_me
+    render(json: current_user, status: :ok)
   end
 
   def update
