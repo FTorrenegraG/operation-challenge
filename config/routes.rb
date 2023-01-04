@@ -9,7 +9,7 @@ Rails.application.routes.draw do
       end
     end
     namespace :v2 do
-      resources :user_accounts, only: %i[index create update]
+      resources :user_accounts, only: %i[index create update destroy]
     end
   end
   mount Rswag::Ui::Engine => '/api-docs'
