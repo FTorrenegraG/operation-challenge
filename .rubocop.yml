@@ -265,9 +265,6 @@ Style/KeywordParametersOrder:
 Style/MethodCallWithArgsParentheses:
   Enabled: true
 
-Style/MissingElse:
-  Enabled: true
-
 Style/MultilineMethodSignature:
   Enabled: true
 
