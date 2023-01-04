@@ -6,7 +6,12 @@ class Api::V2::UserAccountsController < ApplicationController
   before_action :load_user_account, only: %i[update destroy]
 
   def index
-    movements = UserAccount.all.unscoped.ordered.includes(:user, :account)
+    movements = UserAccount.unscoped.eager_load(:user, :account).ordered
+
+    movements = search_by_account(movements, params[:accounts]) if params[:accounts]
+    movements = search_by_user(movements, params[:users]) if params[:users]
+    movements = search_by_date(movements, params[:in_date], 'in') if params[:in_date]
+    movements = search_by_date(movements, params[:out_date], 'out') if params[:out_date]
 
     render(
       json: movements.to_json(
@@ -76,6 +81,27 @@ class Api::V2::UserAccountsController < ApplicationController
   end
 
   private
+
+  def search_by_date(movements, date_ps, in_out)
+    selected_date = Date.parse(date_ps.html_safe)
+    if in_out == 'in'
+      movements.where(in_date: selected_date.all_day)
+    else
+      movements.where(out_date: selected_date.all_day)
+    end
+  end
+
+  def search_by_account(movements, account_ps)
+    movements = movements.where('accounts.name like ?', "%#{account_ps[:name].html_safe}%") if account_ps[:name]
+    movements = movements.where('accounts.client_name like ?', "%#{account_ps[:client_name].html_safe}%") if account_ps[:client_name]
+    movements
+  end
+
+  def search_by_user(movements, user_ps)
+    movements = movements.where('users.name like ?', "%#{user_ps[:name].html_safe}%") if user_ps[:name]
+    movements = movements.where('users.email like ?', "%#{user_ps[:email].html_safe}%") if user_ps[:email]
+    movements
+  end
 
   def load_user_account
     @user_account = UserAccount.find_by(id: params[:id].html_safe)
