@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'swagger_helper'
-require 'devise/jwt/test_helpers'
 require 'faker'
 
 RSpec.shared_examples('User management') do
@@ -43,18 +42,18 @@ RSpec.shared_examples('User management') do
         }
 
         response '201', 'user created' do
-          let(:user_params) { { user: { email: Faker::Internet.safe_email, password: 'password' } } }
+          let(:user_params) { { user: { email: Faker::Internet.safe_email, password: 'password', password_confirmation: 'password' } } }
           run_test!
         end
 
         response '422', 'invalid request' do
           let(:user) { FactoryBot.create(:user) }
-          let(:user_params) { { email: user.email, password: 'password' } }
+          let(:user_params) { { user: { email: user.email, password: 'password', password_confirmation: 'password' } } }
           run_test!
         end
 
         response '401', 'Unauthorized' do
-          let(:user_params) { { email: Faker::Internet.safe_email, password: 'password', access_level: :admin } }
+          let(:user_params) { { user: { email: Faker::Internet.safe_email, password: 'password', password_confirmation: 'password', access_level: :super_admin } } }
           run_test!
         end
       end
@@ -120,13 +119,13 @@ RSpec.shared_examples('User management') do
 
         response '401', 'Unauthorized' do
           let(:id) { FactoryBot.create(:user).id }
-          let(:user_params) { { email: Faker::Internet.safe_email, password: 'password', access_level: :admin } }
+          let(:user_params) { { user: { email: Faker::Internet.safe_email, password: 'password', password_confirmation: 'password', access_level: :super_admin } } }
           run_test!
         end
 
         response '404', 'not found' do
           let(:id) { '123' }
-          let(:user_params) { { email: Faker::Internet.safe_email, password: 'password', access_level: :admin } }
+          let(:user_params) { { user: { email: Faker::Internet.safe_email, password: 'password', password_confirmation: 'password', access_level: :super_admin } } }
           run_test!
         end
       end
@@ -172,13 +171,13 @@ RSpec.shared_examples('User management') do
 
         response '401', 'Unauthorized' do
           let(:id) { FactoryBot.create(:user).id }
-          let(:user_params) { { email: Faker::Internet.safe_email, password: 'password', access_level: :admin } }
+          let(:user_params) { { user: { email: Faker::Internet.safe_email, password: 'password', password_confirmation: 'password', access_level: :super_admin } } }
           run_test!
         end
 
         response '404', 'not found' do
           let(:id) { '123' }
-          let(:user_params) { { email: Faker::Internet.safe_email, password: 'password', access_level: :admin } }
+          let(:user_params) { { user: { email: Faker::Internet.safe_email, password: 'password', password_confirmation: 'password', access_level: :super_admin } } }
           run_test!
         end
       end

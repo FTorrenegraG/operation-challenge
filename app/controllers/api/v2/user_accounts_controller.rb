@@ -27,10 +27,10 @@ class Api::V2::UserAccountsController < ApplicationController
 
   def create
     user = User.find_by(id: params[:user_id].html_safe)
-    return_not_found unless user
+    return return_not_found unless user
 
     account = Account.find_by(id: params[:account_id].html_safe)
-    return_not_found unless account
+    return return_not_found unless account
 
     user_account = UserAccount.new(user_id: user.id, account_id: account.id, in_date: params[:in_date]&.html_safe || Time.now.to_datetime)
     return return_errors(user_account) unless user_account.save
@@ -43,7 +43,7 @@ class Api::V2::UserAccountsController < ApplicationController
           account: { only: %i[name client_name] }
         }
       ),
-      status: :ok
+      status: :created
     )
   end
 

@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'rails_helper'
+require 'devise/jwt/test_helpers'
 
 RSpec.describe('Api::V1::UsersController', type: :request) do
   describe 'as SuperAdmin User' do

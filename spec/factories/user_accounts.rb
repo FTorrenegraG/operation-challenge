@@ -2,9 +2,9 @@
 
 FactoryBot.define do
   factory :user_account do
-    user { nil }
-    account { nil }
-    in_date { '2022-12-29 16:42:55' }
-    out_date { '2022-12-29 16:42:55' }
+    user
+    account
+    in_date { Time.now.to_datetime }
+    out_date { nil }
   end
 end

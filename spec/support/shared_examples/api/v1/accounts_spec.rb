@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'swagger_helper'
-require 'devise/jwt/test_helpers'
 
 RSpec.shared_examples('Account management') do
   describe('api/v1/accounts', type: :request) do

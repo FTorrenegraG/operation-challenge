@@ -387,6 +387,160 @@ paths:
       responses:
         '200':
           description: successful
+  "/api/v2/user_accounts":
+    get:
+      summary: list user_accounts
+      tags:
+      - Api::V2::UserAccounts
+      security:
+      - Bearer: {}
+      parameters:
+      - name: Authorization
+        in: header
+        schema:
+          type: string
+      - name: search_params
+        in: path
+        schema:
+          type: object
+          properties:
+            users:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+            accounts:
+              type: object
+              properties:
+                name:
+                  type: string
+                client_name:
+                  type: string
+            in_date:
+              type: string
+            out_date:
+              type: string
+        required: true
+      responses:
+        '200':
+          description: successful
+    post:
+      summary: create user_accounts
+      tags:
+      - Api::V2::UserAccounts
+      security:
+      - Bearer: {}
+      parameters:
+      - name: Authorization
+        in: header
+        schema:
+          type: string
+      responses:
+        '201':
+          description: user account created
+        '404':
+          description: not found
+        '422':
+          description: invalid request
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_id:
+                  type: string
+                account_id:
+                  type: string
+                in_date:
+                  type: string
+                out_date:
+                  type: string
+              required:
+              - user_id
+              - account_id
+  "/api/v2/user_accounts/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: id
+      required: true
+      schema:
+        type: string
+    patch:
+      summary: update user_account
+      tags:
+      - Api::V2::UserAccounts
+      security:
+      - Bearer: {}
+      parameters:
+      - name: Authorization
+        in: header
+        schema:
+          type: string
+      responses:
+        '200':
+          description: account updated
+        '422':
+          description: invalid request
+        '404':
+          description: not found
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                in_date:
+                  type: string
+                out_date:
+                  type: string
+    put:
+      summary: update user_accounts
+      tags:
+      - Api::V2::UserAccounts
+      security:
+      - Bearer: {}
+      parameters:
+      - name: Authorization
+        in: header
+        schema:
+          type: string
+      responses:
+        '200':
+          description: account updated
+        '422':
+          description: invalid request
+        '404':
+          description: not found
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                in_date:
+                  type: string
+                out_date:
+                  type: string
+    delete:
+      summary: delete user_accounts
+      tags:
+      - Api::V2::UserAccounts
+      security:
+      - Bearer: {}
+      parameters:
+      - name: Authorization
+        in: header
+        schema:
+          type: string
+      responses:
+        '200':
+          description: successful
+        '404':
+          description: not found
   "/login":
     post:
       summary: Create Session
