@@ -400,7 +400,7 @@ paths:
         schema:
           type: string
       - name: search_params
-        in: path
+        in: query
         schema:
           type: object
           properties:
@@ -422,7 +422,6 @@ paths:
               type: string
             out_date:
               type: string
-        required: true
       responses:
         '200':
           description: successful

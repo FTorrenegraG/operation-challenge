@@ -7,7 +7,7 @@ RSpec.shared_examples('UserAccount Management') do
         tags('Api::V2::UserAccounts')
         security [Bearer: {}]
         parameter name: :Authorization, in: :header, type: :string
-        parameter name: :search_params, in: :path, schema: {
+        parameter name: :search_params, in: :query, schema: {
           type: :object,
           properties: {
             users: {
@@ -28,8 +28,67 @@ RSpec.shared_examples('UserAccount Management') do
             out_date: { type: :string }
           }
         }
+        let!(:user_accounts) { FactoryBot.create_list(:user_account, 5) }
         response(200, 'successful') do
-          run_test!
+          context 'search by users' do
+            context 'specific user is search by name' do
+              let(:user_account) { user_accounts.sample }
+              let(:search_params) { { users: { name: user_account.user.name } } }
+              before do |example|
+                submit_request(example.metadata)
+              end
+              it 'should return only the user searched' do
+                data = JSON.parse(response.body).map { |u_a_i| u_a_i['id'] }
+                other_user_account = UserAccount.unscoped.eager_load(:user).where.not(users: { name: user_account.user.name }).sample.id
+                expect(data).to(include(user_account.id))
+                expect(data).not_to(include(other_user_account))
+              end
+            end
+
+            context 'specific user is search by email' do
+              let(:user_account) { user_accounts.sample }
+              let(:search_params) { { users: { email: user_account.user.email } } }
+              before do |example|
+                submit_request(example.metadata)
+              end
+              it 'should return only the user searched' do
+                data = JSON.parse(response.body).map { |u_a_i| u_a_i['id'] }
+                other_user_account = UserAccount.unscoped.eager_load(:user).where.not(users: { email: user_account.user.email }).sample.id
+                expect(data).to(include(user_account.id))
+                expect(data).not_to(include(other_user_account))
+              end
+            end
+          end
+
+          context 'search by accounts' do
+            context 'specific account is search by name' do
+              let(:user_account) { user_accounts.sample }
+              let(:search_params) { { accounts: { name: user_account.account.name } } }
+              before do |example|
+                submit_request(example.metadata)
+              end
+              it 'should return only the user searched' do
+                data = JSON.parse(response.body).map { |u_a_i| u_a_i['id'] }
+                other_user_account = UserAccount.unscoped.eager_load(:account).where.not(accounts: { name: user_account.account.name }).sample.id
+                expect(data).to(include(user_account.id))
+                expect(data).not_to(include(other_user_account))
+              end
+            end
+
+            context 'specific account is search by client_name' do
+              let(:user_account) { user_accounts.sample }
+              let(:search_params) { { accounts: { client_name: user_account.account.client_name } } }
+              before do |example|
+                submit_request(example.metadata)
+              end
+              it 'should return only the user searched' do
+                data = JSON.parse(response.body).map { |u_a_i| u_a_i['id'] }
+                other_user_account = UserAccount.unscoped.eager_load(:account).where.not(accounts: { client_name: user_account.account.client_name }).sample.id
+                expect(data).to(include(user_account.id))
+                expect(data).not_to(include(other_user_account))
+              end
+            end
+          end
         end
       end
 
