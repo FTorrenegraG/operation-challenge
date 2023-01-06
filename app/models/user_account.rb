@@ -7,6 +7,9 @@ class UserAccount < ApplicationRecord
   validate :out_date_after_in_date
   validate :last_movement_duplicated?, on: :create
 
+  delegate :name, :client_name, to: :account, prefix: true
+  delegate :name, :email, to: :user, prefix: true
+
   before_create :end_last_movement
 
   scope :active, -> { where(out_date: nil).or(where('out_date > ?', Time.now.to_datetime)) }
@@ -16,6 +19,10 @@ class UserAccount < ApplicationRecord
     self.out_date = Time.now.to_datetime
 
     save
+  end
+
+  def active
+    out_date.nil? || out_date > Time.now.to_datetime
   end
 
   private

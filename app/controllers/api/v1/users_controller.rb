@@ -14,15 +14,54 @@ class Api::V1::UsersController < ApplicationController
   end
 
   def index
-    render(json: User.all, status: :ok)
+    render(
+      json: User.includes(:account, user_accounts: :account).to_json(
+        only: %i[id name email],
+        include: {
+          account: {
+            only: %i[id name client_name]
+          },
+          user_accounts: {
+            only: %i[id in_date out_date account_id],
+            methods: %i[active account_name account_client_name]
+          }
+        }
+      ),
+      status: :ok
+    )
   end
 
   def show
-    render(json: @user, status: :ok)
+    render(
+      json: @user.to_json(
+        except: :jti,
+        include: {
+          account: {},
+          user_accounts: {
+            methods: %i[active account_name account_client_name]
+          }
+        }
+      ),
+      status: :ok
+    )
   end
 
   def show_me
-    render(json: current_user, status: :ok)
+    render(
+      json: current_user.to_json(
+        except: %i[jti id access_level updated_at created_at],
+        include: {
+          account: {
+            only: %i[name client_name manager_name]
+          },
+          user_accounts: {
+            only: %i[in_date out_date],
+            methods: %i[active account_name account_client_name]
+          }
+        }
+      ),
+      status: :ok
+    )
   end
 
   def update
@@ -56,7 +95,7 @@ class Api::V1::UsersController < ApplicationController
   end
 
   def load_user
-    @user = User.find_by(id: params[:id].html_safe)
+    @user = User.includes(:account, user_accounts: :account).find_by(id: params[:id].html_safe)
     return return_not_found unless @user
   end
 end
