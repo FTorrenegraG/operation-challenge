@@ -9,7 +9,7 @@ class UserAccount < ApplicationRecord
 
   before_create :end_last_movement
 
-  scope :active, -> { where(active: true) }
+  scope :active, -> { where(out_date: nil).or(where('out_date > ?', Time.now.to_datetime)) }
   scope :ordered, -> { order(out_date: :desc, in_date: :desc) }
   default_scope { active }
 
