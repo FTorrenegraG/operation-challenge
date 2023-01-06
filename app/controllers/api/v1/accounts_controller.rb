@@ -13,11 +13,26 @@ class Api::V1::AccountsController < ApplicationController
   end
 
   def index
-    render(json: Account.all, status: :ok)
+    render(
+      json: Account.includes(:users).to_json(
+        only: %i[id name client_name manager_name],
+        include: {
+          users: {
+            only: %i[id email name]
+          }
+        }
+      ),
+      status: :ok
+    )
   end
 
   def show
-    render(json: @account, status: :ok)
+    render(
+      json: @account.to_json(
+        include: :users
+      ),
+      status: :ok
+    )
   end
 
   def update
