@@ -11,11 +11,9 @@ class UserAccount < ApplicationRecord
 
   scope :active, -> { where(out_date: nil).or(where('out_date > ?', Time.now.to_datetime)) }
   scope :ordered, -> { order(out_date: :desc, in_date: :desc) }
-  default_scope { active }
 
   def inactive!
     self.out_date = Time.now.to_datetime
-    self.active = false
 
     save
   end
@@ -30,14 +28,14 @@ class UserAccount < ApplicationRecord
   end
 
   def last_movement_duplicated?
-    last_movement = UserAccount.where(user_id:, account_id:).last
+    last_movement = UserAccount.where(user_id:, account_id:).active.last
     return true unless last_movement
 
     errors.add(:account_id, 'Your last movement active is in the same account')
   end
 
   def end_last_movement
-    last_movement = UserAccount.where(user_id:).last
+    last_movement = UserAccount.where(user_id:).active.last
     return true unless last_movement
 
     last_movement.inactive!

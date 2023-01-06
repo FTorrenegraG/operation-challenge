@@ -6,7 +6,7 @@ class Api::V2::UserAccountsController < ApplicationController
   before_action :load_user_account, only: %i[update destroy]
 
   def index
-    movements = UserAccount.unscoped.eager_load(:user, :account).ordered
+    movements = UserAccount.eager_load(:user, :account).ordered
 
     movements = search_by_account(movements, params[:accounts]) if params[:accounts]
     movements = search_by_user(movements, params[:users]) if params[:users]
