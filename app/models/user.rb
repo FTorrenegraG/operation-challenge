@@ -25,10 +25,6 @@ class User < ApplicationRecord
     super.merge({ access_level: })
   end
 
-  def current_account
-    user_accounts.active.ordered.first&.account
-  end
-
   private
 
   def jti_token
