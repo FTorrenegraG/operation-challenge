@@ -41,6 +41,9 @@ gem 'rswag-api'
 gem 'rswag-specs'
 gem 'rswag-ui'
 
+# ActiveAdmin
+gem 'activeadmin'
+
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'
 
