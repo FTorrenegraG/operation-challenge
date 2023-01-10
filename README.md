@@ -1,24 +1,37 @@
-# README
+# Operation Challenge - ArkusNexus
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+## Getting Started
 
-Things you may want to cover:
+### Requirements
+* Docker
 
-* Ruby version
+### Installing
 
-* System dependencies
+```
+docker compose build
+```
 
-* Configuration
+# Starting the app
+### Locally
+```
+docker compose up 
+```
 
-* Database creation
+# See documentation
 
-* Database initialization
+go to:
 
-* How to run the test suite
+```
+/api-docs
+```
 
-* Services (job queues, cache servers, search engines, etc.)
+# Run rspec tests
 
-* Deployment instructions
+```
+docker compose run web bash
+```
+```
+rspec
+```
 
-* ...
+
