@@ -14,7 +14,9 @@ Rails.application.routes.draw do
   end
   mount Rswag::Ui::Engine => '/api-docs'
   mount Rswag::Api::Engine => '/api-docs'
+  devise_for :users, ActiveAdmin::Devise.config
   devise_for :users, skip: %i[registrations sessions passwords]
+  ActiveAdmin.routes(self)
   devise_scope :user do
     post :login, to: 'sessions#create'
     delete :logout, to: 'sessions#destroy'
