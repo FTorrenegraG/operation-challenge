@@ -16,6 +16,10 @@ docker compose build
 ```
 docker compose up 
 ```
+and after:
+```
+localhost:3000
+```
 
 # See documentation
 
